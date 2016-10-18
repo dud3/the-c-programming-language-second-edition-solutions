@@ -15,7 +15,7 @@ int readlines(char *lineptr[], int maxlines)
     char line[MAXLEN];
 
     nlines = 0;
-    while ((len = _getline(line, MAXLEN)) > 0)
+    while ((len = xgetline(line, MAXLEN)) > 0)
         if (nlines >= maxlines)
             return -1;
         else {
@@ -31,7 +31,7 @@ int readlines(char *lineptr[], int maxlines)
                     lineptr[1] points to 0x000002
                     ...
                     
-                _getline(...) returns line[] array filled in with chars,
+                xgetline(...) returns line[] array filled in with chars,
                 E.x: 
                     loop 1: 
                         line = "abc";
@@ -61,7 +61,7 @@ void writelines(char *lineptr[], int nlines)
     s[] is passed by reference:
     which means that we can access this variable from the caller function
 */
-int _getline(char s[], int max)
+int xgetline(char s[], int max)
 {
     int c, i, l;
 
