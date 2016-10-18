@@ -6,26 +6,23 @@
 
 #include <stdio.h>
 
-void _strncat(char *s, char *t, int n);
+void _strncpy(char *s, char *t, int n);
+int getchars(char *s, int max);
 
 int main(void)
 {
-    char *s, *t;
+    char t[] = "testring1234";
+    char s[] = "";
 
-    s = "test";
-    t = "ring1234";
-
-    _strncat(s, t, 4);
-    printf("cat: %s\n", s);
+    _strncpy(s, t, 8);
+    printf("strncpy: %s\n", s);
 
     return 0;
 }
 
-void _strncat(char *s, char *t, int n)
+void _strncpy(char *s, char *t, int n)
 {
-    while (*s)
-        ++s;
-    while (n-- > 0 && *t)
-        *s++ = *t++;
+    while ((n--) > 0 && (*s++ = *t++))
+        ;
     *s = '\0';
 }
