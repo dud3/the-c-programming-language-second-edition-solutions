@@ -1,88 +1,118 @@
-/**
- * Author: Jeremy Yu <ccpalettes@gmail.com>
- * 
- * Solution for Exercise 5-09, Chapter5.
- */
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 
-static char daytab[2][13] = {
-    {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-    {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-};
+/* Handle leap years */
+static char *daytab[2];
 
-int day_of_year(int year, int month, int day);
-int month_day(int year, int yearday, int *pmonth, int *pday);
-
-int main(void)
+void prepareMonths()
 {
-    int year, month, day, yearday;
-    int doy, pmonth, pday;
+    int i, j, mday = 31;
+    
+    for(i = 0; i < 2; i++) {
+        daytab[i] = (char *)malloc(sizeof(char));
 
-    year = 2012;
-    month = 2;
-    day = 29;
-    doy = day_of_year(year, month, day);
-    if (doy)
-        printf("%d-%d-%d: day %dth of the year.\n", year, month, day, doy);
-    else
-        printf("%d-%d-%d: invalid!\n", year, month, day);
-
-    year = 2012;
-    month = 6;
-    day = 31;
-    doy = day_of_year(year, month, day);
-    if (doy)
-        printf("%d-%d-%d: day %dth of the year.\n", year, month, day, doy);
-    else
-        printf("%d-%d-%d: invalid!\n", year, month, day);
-        
-    year = 2012;
-    yearday = 60;
-    doy = month_day(year, yearday, &pmonth, &pday);
-    if (doy)
-        printf("day %dth of year %d is %d-%d.\n", yearday, year, pmonth, pday);
-    else
-        printf("day %dth of year %d do not exsits!\n", yearday, year);
-
-    year = 2012;
-    yearday = 367;
-    doy = month_day(year, yearday, &pmonth, &pday);
-    if (doy)
-        printf("day %dth of year %d is %d-%d.\n", yearday, year, pmonth, pday);
-    else
-        printf("day %dth of year %d do not exsits!\n", yearday, year);
-
-    return 0;
+        for(j = 0; j < 12; j++) {
+            
+            if(j == 0)
+                mday = 0;
+            else {
+                if(j % 2 == 1)
+                    mday = 31;
+                else
+                    mday = 30;
+            }
+            
+            if(j == 1) {
+                if(i == 0)
+                    mday = 28;
+                else
+                    mday = 29;
+            }
+            
+            daytab[i][j] = mday;
+        }
+    }
 }
 
-/* day_of_year: set day of year from month & day */
+int is_leap_year(year) 
+{
+    return (year % 4 == 0 && year % 100 == 0) || (year % 400 == 0);
+}
+
+void exit_on_error(int error, char *errorMessage)
+{
+    if(error == -1) {
+        fprintf(stderr, "Error: %s\n", errorMessage);
+        exit(EXIT_FAILURE); /* indicate failure.*/
+    }
+    
+    free(errorMessage);
+}
+
 int day_of_year(int year, int month, int day)
 {
     int i, leap;
-
-    if (month < 1 || month > 12 || day < 1)
-        return 0;
-
-    leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-    if (day > *(*(daytab + leap) + month))
-        return 0;
-    for (i = 1; i < month; i++)
-        day += *(*(daytab + leap) + i);
+    
+    int error = 0;
+    char *errorMessage = malloc(256);
+    
+    leap = is_leap_year(year);
+    
+    if(!(month >= 1 && month <= 12)) {
+        error = -1;
+        errorMessage = "Month out of range";
+    }
+    
+    if(!(day >= 1 && day <= 31)) {
+        error = -1;
+        errorMessage = "Days out of range";
+    }
+    
+    for(i = 1; i < month; i++)
+        day += daytab[leap][i];
+    
+    exit_on_error(error, errorMessage);
+    
     return day;
 }
 
-/* month_day: set month, day from day of year */
-int month_day(int year, int yearday, int *pmonth, int *pday)
+void month_day(int year, int yesterday, int *pmonth, int *pday)
 {
     int i, leap;
-
-    leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-    if (yearday < 1 || yearday > (leap ? 366 : 365))
-        return 0;
-    for (i = 1; yearday > *(*(daytab + leap) + i); i++)
-        yearday -= *(*(daytab + leap) + i);
+    
+    int error = 0;
+    char *errorMessage = malloc(256);
+    
+    leap = is_leap_year(year);
+    
+    if(yesterday > 365) {
+        error = -1;
+        errorMessage = "Days out of range";
+    }
+    
+    for(i = 1; yesterday > daytab[leap][i]; i++)
+        yesterday -= daytab[leap][i];
+        
+    exit_on_error(error, errorMessage);
+    
     *pmonth = i;
-    *pday = yearday;
-    return 1;
+    *pday = yesterday;
+}
+
+int main()
+{
+    prepareMonths();
+    
+    int yday = day_of_year(1992, 2, 20);
+    
+    printf("Date to day: %d \n", yday);
+    
+    int pmonth;
+    int pday;
+    
+    month_day(1992, 51, &pmonth, &pday);
+    printf("Day to date: month: %d day: %d\n", pmonth, pday);
+    
+    return 0;
 }
