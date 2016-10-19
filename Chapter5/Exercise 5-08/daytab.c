@@ -77,13 +77,12 @@ int main()
 {
     int a = day_of_year(1992, 2, 20);
     
+    printf("Date to day: %d \n", a);
+    
     int pmonth;
     int pday;
     
     month_day(1992, 51, &pmonth, &pday);
-    
-    printf("Date to day: %d \n", a);
-    
     printf("Day to date: month: %d day: %d\n", pmonth, pday);
     
     return 0;
