@@ -69,8 +69,10 @@ int day_of_year(int year, int month, int day)
         errorMessage = "Days out of range";
     }
     
-    for(i = 1; i < month; i++)
-        day += daytab[leap][i];
+    if (day > *(*(daytab + leap) + month))
+        return 0;
+    for (i = 1; i < month; i++)
+        day += *(*(daytab + leap) + i);
     
     exit_on_error(error, errorMessage);
     
@@ -91,8 +93,8 @@ void month_day(int year, int yesterday, int *pmonth, int *pday)
         errorMessage = "Days out of range";
     }
     
-    for(i = 1; yesterday > daytab[leap][i]; i++)
-        yesterday -= daytab[leap][i];
+   for (i = 1; yearday > *(*(daytab + leap) + i); i++)
+        yearday -= *(*(daytab + leap) + i);
         
     exit_on_error(error, errorMessage);
     
