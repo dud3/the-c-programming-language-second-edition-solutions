@@ -46,22 +46,14 @@ int main(int argc, char *argv[])
             
         }
     }
-    
-    /* Allocate memory for each pointer to char* */
-    char s[MAXLINES][MAXLEN];
-    int i;
-    for (i = 0; i < MAXLINES; ++i) {
-        /* malloc(256); *(lineptr + i) */
-        lineptr[i] = s[i]; 
-    }
-    
+
     int nlines; /* number of input lines read */
     
     if((nlines = readlines(lineptr, MAXLINES)) >= 0) {
         qqsort(lineptr, 0, nlines - 1);
         
         if(nlines < tailn)
-            tailn = 0;
+            tailn = nlines;
         
         printf("Sorted and tailed:\n");
         writelines(lineptr, nlines, tailn);

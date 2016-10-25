@@ -26,18 +26,18 @@ int getLine(char *s, int maxline) {
 
 int readlines(char *lineptr[], int maxlines) {
    int len, nlines;
-   char /* *p, *cplineptr[MAXLEN], */ line[MAXLEN];
+   char line[MAXLEN];
 
    nlines = 0;
    
    while((len = getLine(line, MAXLEN)) > 0) {
-      // p = alloc(len);
-      if(nlines >= maxlines /* || p == NULL */)
+      if(nlines >= maxlines ||
+         (lineptr[nlines] = malloc(sizeof(char) * len)) == NULL)
          return -1;
       else {
          line[len - 1] = '\0'; /* delete new line */
-         // strcpy(p, line);
-         strcpy(lineptr[nlines++], line);
+         strcpy(lineptr[nlines], line);
+         nlines++;
       }
    }
    
@@ -47,8 +47,8 @@ int readlines(char *lineptr[], int maxlines) {
 void writelines(char *lineptr[], int nlines, int tailn) {
    int i;
    
-   if(tailn == 0)
-      tailn = nlines; 
+   if(tailn == nlines)
+      tailn = 0; 
    
    for(i = nlines - tailn; i < nlines; i++) {
       printf("%s\n", lineptr[i]);
