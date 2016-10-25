@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
     printf("Usage example: expr 2 3 4 + p\n");
 
     while (--argc > 0) {
+        printf("*argv: %s \n", *argv);
+        printf("*argv[0]: %c \n", *argv[0]);
+        printf("**argv: %c \n", **argv);
         if (!isdigit(c = **++argv) && strlen(*argv) == 1)
             type = c;
         else

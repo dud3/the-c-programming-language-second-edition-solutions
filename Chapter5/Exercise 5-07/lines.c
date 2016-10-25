@@ -19,33 +19,33 @@ int readlines(char *lineptr[], int maxlines)
         if (nlines >= maxlines)
             return -1;
         else {
-            
+
             /* remove newline insert end of the line */
             line[len-1] = '\0'; 
-            
-            /* 
+
+            /*
                 Assign and increment the value 
                 lineptr => array of pointers, holds pointers as it's elements
                 E.x.: 
                     lineptr[0] points to 0x000001
                     lineptr[1] points to 0x000002
                     ...
-                    
+
                 xgetline(...) returns line[] array filled in with chars,
                 E.x: 
                     loop 1: 
                         line = "abc";
                         lineptr[0] = line;
-                        
+
                     loop 2: 
                         line = "xyz";
                         lineptr[1] = line;
-                        
+
                     ...
             */
             strcpy(lineptr[nlines++], line);
         }
-        
+
     return nlines;
 }
 

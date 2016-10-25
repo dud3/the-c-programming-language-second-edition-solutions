@@ -68,15 +68,19 @@ void entab(char *s1, char *s2, int col, int w)
 
     i = 0;
     while ((c = *s1) != '\0') {
+        
         if (c == ' ' && i >= col - 1) {
+            
             blanksenough = 1;
             blanks = w - i % w;
-            for (j = 1; j < blanks; ++j){
+            
+            for (j = 1; j < blanks; ++j) {
                 if (*(s1 + j) != ' ') {
                     blanksenough = 0;
                     break;
                 }
             }
+            
             if (blanksenough) {
                 *s2++ = '\t';
                 s1 += blanks;
@@ -86,6 +90,7 @@ void entab(char *s1, char *s2, int col, int w)
                 i++;
                 ++s1;
             }
+            
         } else if (c == '\t') {
             *s2++ = c;
             i += w - i % w;

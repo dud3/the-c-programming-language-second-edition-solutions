@@ -1,43 +1,34 @@
-/**
- * Author: Jeremy Yu <ccpalettes@gmail.com>
- * 
- * Solution for Exercise 1-21, Chapter1.
- */
-
 #include <stdio.h>
 
 #define MAXLINE 1000
 #define TAB_WIDTH 8
 
-int getchars(char s[], int maxline);
+void setchar(char s[], int c, int maxline);
 void entab(char s1[], char s2[], int tabwidth);
 
-int main(void)
+int main(int argc, char **argv)
 {
     char s1[MAXLINE];
     char s2[MAXLINE];
 
-    printf("Input some characters, then press enter:\n");
+    if(argc > 2 || argc == 1) {
+        printf("Usage: entab2 'text goes here' \n");
+        /* Only single argument allowed and must be wrapped with 'text' */
+        /* Error handling ... */
+        
+        return -1;
+    }
     
-    while (getchars(s1, MAXLINE) == 0)
-        ;
+    int j = 0;
+    while(argv[1][j] != '\0') {
+        s1[j] = argv[1][j];
+        j++;
+    }
 
     entab(s1, s2, TAB_WIDTH);
     printf("entab result:\n%s\n", s2);
 
     return 0;
-}
-
-int getchars(char s[], int lim)
-{
-    int c, i, l;
-
-    for (i = 0, l = 0; (c = getchar()) != EOF && c != '\n'; ++i)
-        if (i < lim - 1)
-          s[l++] = c;
-    s[l] = '\0';
-
-    return l;
 }
 
 // copy characters in s1 to s2 and replace blanks with tabs

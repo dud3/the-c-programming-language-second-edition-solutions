@@ -66,8 +66,6 @@ char * entab(char line[], int len)
     spaces   = 0;
     entabbed = (char *) malloc(len * sizeof(char) + 1);
 
-    // printf("len: %d \n", len);
-
     for (i = 0; i < len; i++) {
         c = line[i];
 

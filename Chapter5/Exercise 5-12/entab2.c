@@ -1,9 +1,3 @@
-/**
- * Author: Jeremy Yu <ccpalettes@gmail.com>
- * 
- * Solution for Exercise 5-11, Chapter5.
- */
-
 #include <stdio.h>
 #include <stdlib.h> /* for atoi() */
 
@@ -26,7 +20,7 @@ int main(int argc, char **argv)
     if (argc > MAXTABSTOPS)
         argc = MAXTABSTOPS;
         
-    /* 
+    /*
         i = 2;
         Skip the program name.
     */
@@ -113,21 +107,27 @@ void entab(char *s1, char *s2, int w[])
                 }
             }
             
+            /*  Amount of spaces matched?, if so, replce it by a tab. */
             if (blanksenough) {
                 *s2++ = '\t';
                 s1 += blanks;
                 i += blanks;
+            
+            /* Not enough spaces? well assign the chars the way they ares */
             } else {
                 *s2++ = c;
                 i++;
                 ++s1;
             }
             
+        /* Push chars if no blank space found... */
         } else {
-            *s2++ = c;
+            *s2++ = c; /* Assign to the 2nd array */
             i++;
             ++s1;
         }
     }
+    
+    /* Make sure it ends properly */
     *s2++ = '\0';
 }
