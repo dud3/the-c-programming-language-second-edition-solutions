@@ -22,10 +22,5 @@ int numcmp(const char *s1, const char *s2)
 
 int strcmpignore(const char *s1, const char *s2)
 {
-   /* If both upper and lower case are the same, skip them */
-   while (*s1 && *s2 && *s1 == *s2) {
-      ++s1; ++s2;
-   }
-
    return tolower((int)*s1) - tolower((int)*s2);
 }
