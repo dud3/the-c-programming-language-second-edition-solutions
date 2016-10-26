@@ -1,0 +1,31 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+
+int numcmp(const char *s1, const char *s2)
+{
+   double v1, v2;
+
+   v1 = atof(s1);
+   v2 = atof(s2);
+
+   if(v1 < v2) {
+       return -1;
+   }
+   else if(v1 > v2) {
+       return 1;
+   }
+   else {
+       return 0;
+   }
+}
+
+int strcmpignore(const char *s1, const char *s2)
+{
+   /* If both upper and lower case are the same, skip them */
+   while (*s1 && *s2 && *s1 == *s2) {
+      ++s1; ++s2;
+   }
+
+   return tolower(*s1) - tolower(*s2);
+}
