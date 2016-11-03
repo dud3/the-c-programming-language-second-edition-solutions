@@ -26,7 +26,7 @@ int getLine(char *s, int maxline)
    return i;
 }
 
-int readlines(char *lineptr[], int maxlines, int dir)
+int readlines(char *lineptr[], int maxlines)
 {
    int len, nlines;
    char line[MAXLEN];

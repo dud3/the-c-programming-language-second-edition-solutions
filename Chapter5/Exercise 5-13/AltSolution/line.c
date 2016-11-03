@@ -48,7 +48,7 @@ void writelines(char *lineptr[], int nlines, int tailn) {
    int i;
    
    if(tailn == nlines)
-      tailn = 0; 
+      tailn = 0;
    
    for(i = nlines - tailn; i < nlines; i++) {
       printf("%s\n", lineptr[i]);
