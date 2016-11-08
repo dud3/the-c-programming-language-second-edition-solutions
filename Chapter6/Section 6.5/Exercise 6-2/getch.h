@@ -1,2 +1,2 @@
-void getch(void);
-char ungetch(int);
+int getch(void);
+void ungetch(int);

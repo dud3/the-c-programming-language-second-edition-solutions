@@ -131,12 +131,24 @@ int getword(char *word, int lim)
         return c;
     }
 
-    char tmpc;
+    /* skip comments */
+    if(c == '/') {
+        c = getch();
+
+        if(c == '*') {
+            while((c = getch()) != '*' && c != '\0')
+                ;
+
+            /* check for ending '/' */
+            if((c = getch()) == '/')
+                ungetch(c);
+        }
+    }
 
     /* Loop on   rest of the string */
     for(; --lim > 0; w++) {
         /* New line or space */
-        if(!issymalphanum(*w = tmpc)) {
+        if(!issymalphanum(*w = getch())) {
             ungetch(*w);
             break;
         }
@@ -148,7 +160,6 @@ int getword(char *word, int lim)
 
 int issymalphanum(char c)
 {
-
     if((int)c >= 33 && (int)c <= 126)
         return 1;
 
